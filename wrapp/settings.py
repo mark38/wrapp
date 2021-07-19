@@ -80,12 +80,18 @@ WSGI_APPLICATION = 'wrapp.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'weather',
-        'USER': 'weather',
-        'PASSWORD': 'smUdn4Rt',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        # 'NAME': 'weather',
+        # 'USER': 'weather',
+        # 'PASSWORD': 'smUdn4Rt',
+        # 'HOST': '127.0.0.1',
+        # 'PORT': '5432',
+        "ENGINE": os.environ.get("SQL_ENGINE", "django.db.backends.sqlite3"),
+        "NAME": os.environ.get("SQL_DATABASE", os.path.join(BASE_DIR, "db.sqlite3")),
+        "USER": os.environ.get("SQL_USER", "weather"),
+        "PASSWORD": os.environ.get("SQL_PASSWORD", "smUdn4Rt"),
+        "HOST": os.environ.get("SQL_HOST", "localhost"),
+        "PORT": os.environ.get("SQL_PORT", "5432"),
     }
 }
 
