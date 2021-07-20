@@ -1,12 +1,24 @@
 version: '3.7'
 services:
+  frontend:
+    build: ./frontend
+    volumes:
+      - ./frontend/:/usr/src/app/
+    ports:
+      - 80:80
+    networks:
+      vpcbr:
+        ipv4_address: 192.168.18.8
   backend:
-    build: .
+    build: ./backend
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
-      - .:/usr/src/app/
+      - ./backend/:/usr/src/app/
     ports:
       - 8000:8000
+    networks:
+      vpcbr:
+        ipv4_address: 192.168.18.9
     env_file:
       - ./.env
     depends_on:
@@ -19,5 +31,14 @@ services:
       - POSTGRES_USER=weather
       - POSTGRES_PASSWORD=smUdn4Rt
       - POSTGRES_DB=weather
+    networks:
+      vpcbr:
+        ipv4_address: 192.168.18.10
 volumes:
   postgres_data:
+networks:
+  vpcbr:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.18.0/24
